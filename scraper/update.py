@@ -302,7 +302,9 @@ def dedupe(flats):
 def score(f, med):
     s = 0.0
     if f.get("vs_median") is not None:
-        s -= f["vs_median"]  # каждый процент ниже медианы = +1
+        # каждый процент ниже медианы = +1, но не больше 20: в районах с дорогими
+        # новостройками (Марфино) медиана завышена и иначе забивает остальные плюсы
+        s += min(20, -f["vs_median"])
     s += 3 if f["loggia"] else 0
     s += 2 if f["separate_wc"] else 0
     s += 1 if f["isolated"] else 0
