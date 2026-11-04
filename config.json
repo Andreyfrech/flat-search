@@ -1,0 +1,33 @@
+{
+  "districts": {
+    "40": "Алтуфьевский",
+    "42": "Бибирево",
+    "44": "Лианозово",
+    "46": "Марфино",
+    "49": "Отрадное",
+    "52": "Северный",
+    "53": "Северное Медведково",
+    "54": "Южное Медведково"
+  },
+  "rooms": [2, 3],
+  "max_price": 20000000,
+  "min_area": 48,
+  "min_kitchen": 8,
+  "max_walk_min": 15,
+  "max_transport_min": 7,
+  "exclude_first_floor": true,
+  "exclude_last_floor": true,
+  "require_balcony": true,
+  "min_floors_in_house": 6,
+  "exclude_shares": true,
+  "exclude_apartments": true,
+  "exclude_renovation": true,
+  "exclude_adjacent_rooms": true,
+  "not_metro_stations": [
+    "Лианозово", "Бескудниково", "Дегунино", "Новодачная", "Долгопрудная",
+    "Марк", "Лобня", "Хлебниково", "Шереметьевская", "Водники"
+  ],
+  "median_area_range": [45, 62],
+  "new_badge_days": 7,
+  "max_pages": 6
+}
