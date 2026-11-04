@@ -318,9 +318,18 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fixture", help="JSON со списком сырых объявлений вместо запроса к Циану")
     ap.add_argument("--today", help="дата прогона YYYY-MM-DD (для тестов)")
+    ap.add_argument("--check", action="store_true", help="только проверить, отдаёт ли Циан данные с этого IP")
     args = ap.parse_args()
 
     cfg = json.load(open(os.path.join(ROOT, "config.json"), encoding="utf-8"))
+    if args.check:
+        try:
+            d = post(search_query(cfg, 1), retries=1)
+        except RuntimeError as e:
+            print(f"НЕ РАБОТАЕТ: {e}")
+            sys.exit(1)
+        print(f"ЦИАН ОТВЕЧАЕТ: найдено {d.get('offerCount')} объявлений по вашим условиям")
+        return
     data_dir = os.path.join(ROOT, "data")
     os.makedirs(data_dir, exist_ok=True)
     hist_path = os.path.join(data_dir, "history.json")
