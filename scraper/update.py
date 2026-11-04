@@ -46,10 +46,20 @@ def post(json_query, retries=3):
         req = urllib.request.Request(API, data=body, headers=HEADERS, method="POST")
         try:
             with urllib.request.urlopen(req, timeout=40) as r:
-                data = json.loads(r.read().decode())
+                text = r.read().decode("utf-8", "replace")
+                status = r.status
+            try:
+                data = json.loads(text)
+            except ValueError:
+                raise ValueError(f"HTTP {status}, не JSON (вероятно, защита от ботов): {text[:200]!r}")
             if "data" not in data:
                 raise ValueError("неожиданный ответ: " + str(data)[:200])
             return data["data"]
+        except urllib.error.HTTPError as e:
+            last = ValueError(f"HTTP {e.code}: {e.read()[:200]!r}")
+            log(f"  запрос не удался ({last}), попытка {attempt + 1}/{retries}")
+            time.sleep(5 * (attempt + 1))
+            continue
         except (urllib.error.URLError, ValueError, TimeoutError) as e:
             last = e
             log(f"  запрос не удался ({e}), попытка {attempt + 1}/{retries}")
