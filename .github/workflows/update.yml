@@ -15,17 +15,20 @@ concurrency:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    # Циан показывает капчу серверам GitHub, поэтому сбор идёт на своём сервере в России.
+    # Переменная репозитория RUNNER=self-hosted включает его (см. docs/vps.md).
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
+        if: ${{ !vars.RUNNER }}
         with:
           python-version: "3.12"
 
       - name: Собрать объявления с Циана
-        run: python scraper/update.py
+        run: python3 scraper/update.py
 
       - name: Сохранить изменения
         run: |

@@ -64,6 +64,11 @@ def post(json_query, retries=3):
             last = e
             log(f"  запрос не удался ({e}), попытка {attempt + 1}/{retries}")
             time.sleep(5 * (attempt + 1))
+    if "Captcha" in str(last):
+        raise RuntimeError(
+            "Циан показал капчу: с этого IP-адреса он не отдаёт данные. "
+            "Сбор нужно запускать с сервера в России, см. docs/vps.md."
+        )
     raise RuntimeError(f"Циан не отвечает: {last}")
 
 
